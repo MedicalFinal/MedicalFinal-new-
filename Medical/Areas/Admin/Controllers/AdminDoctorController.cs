@@ -23,7 +23,6 @@ namespace Medical.Areas.Admin.Controllers
         }
         public IActionResult Index(CKeyWordViewModel vModel)     //醫生後台主頁
         {
-
             IEnumerable<Doctor> datas = null;
             if (string.IsNullOrEmpty(vModel.txtKeyword))
             {

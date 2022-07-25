@@ -1,22 +1,19 @@
-﻿@model IEnumerable<Medical.ViewModels.CaseRecordViewModel>
+﻿@model IEnumerable<Medical.Models.CaseRecord>
 
 @{
     ViewData["Title"] = "List";
-
+    Layout = "~/Areas/Doctors/Doctor_Layout.cshtml";
 }
+<div>
+    <h1>病患總覽</h1>
+    <label>關鍵字&emsp;</label>
+    <input type="text" id="myInput" placeholder="查詢" class="light-table-filter"  />
+    <select id="myMem" data-table="table"></select>
+    <select id="myTTd"></select>
+    <button id="buttonAjax"></button>
+</div>
 
-<!-- Hero Start -->
-<div><div class="container-fluid bg-primary py-5 hero-header mb-5">
-    <div class="row py-3">
-        <div class="col-12 text-center">
-            <h3 class="display-3 text-white animated zoomIn">歷史病例</h3>
-        </div>
-    </div>
-</div></div>
 
-
-<label>醫生查詢&emsp;</label>
-<input type="text" id="myInput" placeholder="查詢" class="light-table-filter" data-table="table" />
 <table class="table table-sm align-middle table-hover" id="myTable" style="margin:20px 0 100px 0">
     <thead>
         <tr>
@@ -27,20 +24,19 @@
                 看診時間
             </th>
             <th>
-                看診醫生
-            </th>
-            <th>
-                病例概況
+                病患名稱
             </th>
             <th>
                 治療科別
             </th>
+            <th>
+                病患診斷
+            </th>
             <th></th>
         </tr>
-    </thead>`
+    </thead>
     <tbody>
-        @{
-            int count = 0;
+        @{ var count = 0;
             foreach (var item in Model)
             {
                 count++;
@@ -52,33 +48,31 @@
                         @Html.DisplayFor(modelItem => item.Reserve.ReserveDate)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Doctor.DoctorName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.DiagnosticRecord)
+                        @Html.DisplayFor(modelItem => item.Member.MemberName)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.TreatmentDetail.TreatmentDetail1)
                     </td>
                     <td>
-                        @Html.ActionLink("評論", "Create", new { id = item.Doctor.DoctorId }, new { @class = " fas fa-feather me-md-3" })
+                        @Html.DisplayFor(modelItem => item.DiagnosticRecord)
+                    </td>
+                    <td>
+                        @Html.ActionLink("修改", "Edit", new { id = item.CaseId }, new { @class = " fas fa-feather me-md-3" })
                     </td>
                 </tr>
             }
         }
     </tbody>
 </table>
+
 @section Scripts{
     <script>
 
         (function (document) {
             'use strict';
-
             // 建立 LightTableFilter
             var LightTableFilter = (function (Arr) {
-
                 var _input;
-
                 // 資料輸入事件處理函數
                 function _onInputEvent(e) {
                     _input = e.target;
@@ -104,7 +98,6 @@
                     }
                 };
             })(Array.prototype);
-
             // 網頁載入完成後，啟動 LightTableFilter
             document.addEventListener('readystatechange', function () {
                 if (document.readyState === 'complete') {
@@ -113,6 +106,16 @@
             });
 
         })(document);
+
+        async function LoadCitys() {
+        const response = await fetch('@Url.Content("~/AllPatientRecords/city")');
+        const datas = await response.json();
+        console.log(datas);
+        datas.forEach(city => {
+            const opt1 = new Option(city, city);
+            selCity.options.add(opt1);
+        })
+        LoadDistricts()
+    }
     </script>
 }
-

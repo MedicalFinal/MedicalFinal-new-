@@ -10,13 +10,17 @@ namespace Medical.Controllers
 {
     public class RatingDoctorController : Controller
     {
-        
+        private readonly MedicalContext _context;
+        public RatingDoctorController(MedicalContext medicalContext)
+        {
+            _context = medicalContext;
+        }
 
         public IActionResult List()
         {
-            MedicalContext medical = new MedicalContext();
+            
             IEnumerable<RatingDoctoeViewModel> datas = null;
-            datas = medical.RatingDoctors.Select(d => new RatingDoctoeViewModel
+            datas = _context.RatingDoctors.Select(d => new RatingDoctoeViewModel
             {
                 ratingDoctor = d,
                 Doctor = d.Doctor,
@@ -26,19 +30,18 @@ namespace Medical.Controllers
         }
         public IActionResult Delete(int? id)
         {
-            MedicalContext medical = new MedicalContext();
-            RatingDoctor ratingDoctor = medical.RatingDoctors.FirstOrDefault(r => r.RatingDoctorId == id);
+            
+            RatingDoctor ratingDoctor = _context.RatingDoctors.FirstOrDefault(r => r.RatingDoctorId == id);
             if(ratingDoctor != null)
             {
-                medical.RatingDoctors.Remove(ratingDoctor);
-                medical.SaveChanges();
+                _context.RatingDoctors.Remove(ratingDoctor);
+                _context.SaveChanges();
             }
             return RedirectToAction("List");
         }
         public IActionResult Edit(int? id)
         {
-            MedicalContext medical = new MedicalContext();
-            RatingDoctor ratingDoctor = medical.RatingDoctors.FirstOrDefault(r => r.RatingDoctorId == id);
+            RatingDoctor ratingDoctor = _context.RatingDoctors.FirstOrDefault(r => r.RatingDoctorId == id);
             if (ratingDoctor == null)
             {
                 return RedirectToAction("List");
@@ -48,14 +51,14 @@ namespace Medical.Controllers
         [HttpPost]
         public IActionResult Edit(RatingDoctor rd)
         {
-            MedicalContext medical = new MedicalContext();
-            RatingDoctor ratingDoctor = medical.RatingDoctors.FirstOrDefault(r => r.RatingDoctorId == rd.RatingDoctorId);
+           
+            RatingDoctor ratingDoctor = _context.RatingDoctors.FirstOrDefault(r => r.RatingDoctorId == rd.RatingDoctorId);
             if (ratingDoctor != null)
             {
                 ratingDoctor.DoctorId = rd.DoctorId;
                 ratingDoctor.RatingTypeId = rd.RatingTypeId;
                 ratingDoctor.Rating = rd.Rating;
-                medical.SaveChanges();
+                _context.SaveChanges();
             }
             return RedirectToAction("List");
         }
