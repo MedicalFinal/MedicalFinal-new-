@@ -25,6 +25,8 @@
     <None Include="Areas\Admin\Views\AdminDoctor\EditDetail.cshtml" />
     <None Include="Areas\Admin\Views\AdminDoctor\Email.cshtml" />
     <None Include="Areas\Admin\Views\AdminDoctor\Index.cshtml" />
+    <None Include="Areas\Doctors\Views\AllPatientRecords\Edit.cshtml" />
+    <None Include="Areas\Doctors\Views\AllPatientRecords\List.cshtml" />
 
     <None Include="Views\ClinicDetail\List.cshtml" />
 
