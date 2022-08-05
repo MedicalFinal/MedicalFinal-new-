@@ -21,8 +21,7 @@
     <!-- Font Awesome -->
     <!--<link rel="stylesheet" href="~/plugins/fontawesome-free/css/all.min.css">-->
 
-
-
+    
 
 
 }
@@ -81,7 +80,7 @@
                                 <input id="date" type="date" name="txtdate" class="form-control bg-light border-0" placeholder="選擇日期" style="height: 55px;">
                             </div>
                             <div class="col-12">
-                                <button id="submit" class="btn btn-dark w-100 py-3" data-bs-toggle="modal" data-bs-target="#exampleModa2" type="submit" >查詢門診</button>
+                                <button id="submit" class="btn btn-dark w-100 py-3" data-bs-toggle="modal" data-bs-target="#exampleModa2" type="submit">查詢門診</button>
                             </div>
                         </div>
                     </form>
@@ -118,7 +117,7 @@
 @*結果顯現*@
 <div class="card">
     <div class="card-header">
-        <h3 id="title" class="card-title">查詢結果</h3>
+        <h3 id="title" class="card-title">查詢結果</h3>       
     </div>
     <div class="card-body">
         <div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4">
@@ -327,7 +326,7 @@
                             </tr>
                         </thead>`;
 
-         
+
             //丟入篩選條件 傳回ReserveResult去篩選
             $.ajax({
                 url: '@Url.Content("~/Reserve/ReserveResult")',
@@ -344,21 +343,21 @@
                         result += `<td>${item.clinicdate} ${item.period}</td>`
                         if (item.online == 0) {
                             result += `<td>剩餘:${item.sequence_number}位</td>`
-                            result += `<td><button type="button" id="GoReserve" name=${item.clinicDetailid} onclick="GoReserve()" class="btn btn-primary GoReserve" data-bs-toggle="modal" data-bs-target="#exampleModal4">我要預約</button></td></tr></tbody>`
+                            result += `<td><button type="button" id="GoReserve" name=${item.clinicDetailid} onclick="GoReserve()" class="btn btn-primary GoReserve" data-bs-toggle="modal"  data-bs-target="#exampleModal4">我要預約</button></td></tr></tbody>`
 
-                        }                     
+                        }
 
                         count++;
 
                         if (doc == "選擇醫生") {
 
-                            $("#title").html(`查詢全部 共有${count}筆`); 
+                            $("#title").html(`查詢全部 共有${count}筆`);
                         }
                         else
                         {
                             $("#title").html(`查詢結果 醫生:${doc} --${date}  共有${count}筆`);
                         }
-                        
+
                     })
                     result += `<tfoot>
                                             <tr>
@@ -388,16 +387,6 @@
 
         })
 
-        /*loderesult();*/
-
-        //setInterval($(function () {
-        //    $("#example1").DataTable({
-        //        "responsive": true, "lengthChange": false, "autoWidth": false,
-        //        "buttons": ["copy", "excel",], "retrieve": true
-        //    }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-
-        //}), 1000);
-
         //按下預約 填入modal
         function GoReserve() {
 
@@ -410,18 +399,43 @@
                 dataType: "json",
                  success: function (datas)
                  {
+
+                     $('#exampleModal4').remove();
+
                      if (datas==null)
                      {
+                         //$('#exampleModal4').modal("hide");
+
 
                          /*沒登入跳轉登入畫面*/
-                         alert("本診所採全會員制~您尚未成為會員  頁面即將跳轉!");
-                         $('#exampleModal').attr("hidden", "hidden");
-                         const back = window.location.href;
-                         console.log(back);
+                         @*Swal.fire({
+                             title: '您尚未成為會員 ',
+                             text: "本診所採全會員制~您尚未成為會員",
+                             icon: 'warning',
+                             showCancelButton: true,
+                             confirmButtonColor: '#3085d6',
+                             cancelButtonColor: '#d33',
+                             confirmButtonText: '前往登入'
+                         }).then((result) => {
+                             if (result.isConfirmed) {
 
-                         window.location.href = `@Url.Content("~/Login/Login/?reserve=reserve")`;
+                                     const back = window.location.href;
+                                     console.log(back);
+
+                                     window.location.href = `@Url.Content("~/Login/Login/?reserve=reserve")`;
+
+                             }
+                         })*@
+                         alert("本診所採全會員制~您尚未成為會員 即將跳轉至登入頁面");
+                         const back = window.location.href;
+                                     console.log(back);
+
+                                     window.location.href = `@Url.Content("~/Login/Login/?reserve=reserve")`;
+
+
+
                      }
-                     console.log(datas);
+
                      $.each(datas, function (index, item) {
                          if (item.memberid > 0)
                          {
@@ -514,15 +528,13 @@
 
         }
 
-
-
-
     </script>
-
+   
 
 
     <!-- jQuery -->
     <script src="~/plugins/jquery/jquery.min.js"></script>
+
     <!-- Bootstrap 4 -->
     <script src="~/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <!-- DataTables  & Plugins -->

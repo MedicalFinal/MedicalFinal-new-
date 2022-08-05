@@ -80,7 +80,7 @@ namespace Medical.Controllers
             List<Clinictime> list = new List<Clinictime>();
             foreach (var item in result)
             {
-                if (item.PeriodId == Period)
+                if (item.PeriodId == Period) //當前時段 才會秀在即時診間
                 {
                        Clinictime t = new Clinictime(_context)
                     {
