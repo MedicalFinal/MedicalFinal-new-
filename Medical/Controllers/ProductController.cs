@@ -238,6 +238,20 @@ namespace Medical.Controllers
 
             return Json(otherProds);
         }
+        //取top3
+        public IActionResult GetTopThree()
+        {
+            List<CGetOthersProduct> olist = new List<CGetOthersProduct>();
+            var topthree = _medicalContext.OrderDetails.Include(od => od.Product).Where(od => od.Quantity > 4).Select(t => new CGetOthersProduct
+            {
+                ProductName = t.Product.ProductName
+            }).Take(3);
+
+
+
+            return Json(topthree);
+        }
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -755,7 +769,9 @@ namespace Medical.Controllers
             ) ;
 
             reserve.RedirectUrls.ConfirmUrl = "https://localhost:44302/Product/confirm";
+            //reserve.RedirectUrls.ConfirmUrl = "http://localhost/Product/confirm";//IIS
             reserve.RedirectUrls.CancelUrl = "https://localhost:44302/Product/confirm";
+            //reserve.RedirectUrls.CancelUrl = "http://localhost/Product/confirm";//IIS
 
             return reserve;
         }

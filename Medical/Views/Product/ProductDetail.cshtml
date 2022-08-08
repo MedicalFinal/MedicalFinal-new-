@@ -155,6 +155,31 @@
                 </button>
             </div>
         </div>
+        <div class="row mt-3 col-md-4" style="height: 20em; padding-top: 10px; padding-bottom: 20px; margin-left: 5px;">
+            <p style="margin: 0; width: 94%; font-size: larger; background-color:darkcyan;color:white;margin:auto;">本月暢銷商品</p>
+            <div style="height: 95%; width: 100%; background-color: white;margin:auto;">
+                <img src="~/img/global_shopping.gif" style="height:140px; width:100%;" />
+                <table class="table table-striped table-hover" id="top3table" style="width:99%;">
+                    <tr>
+                        <th style="font-size:larger;">#1</th>
+                        <th><i style="color:goldenrod" class="fa-solid fa-crown fa-xl"></i></th>
+                        <th><a href="#" style="font-size:larger;" id="top1"></a></th>
+                    </tr>
+                    <tr>
+                        <th style="font-size:larger;">#2</th>
+                        <th><i style="color:#c0c0c0" class="fa-solid fa-crown fa-xl"></i></th>
+                        <th><a href="#" style="font-size:larger;" id="top2"></a></th>
+                    </tr>
+                    <tr>
+                        <th style="font-size:larger;">#3</th>
+                        <th><i style="color: rgb(205, 113, 0) " class="fa-solid fa-crown fa-xl"></i></th>
+                        <th><a href="#" style="font-size:larger;" id="top3"></a></th>
+                    </tr>
+                </table>
+
+            </div>
+        </div>
+
     </div>
     <!-- ==============================手風琴================================ -->
     <div class="mt-5" style="width: 99%;  margin: auto;">
@@ -249,10 +274,6 @@
                 $("#mainPic").attr("src", clicksrc);
             })
 
-
-
-
-
             //取得推薦商品
 
             async function GetProducts() {
@@ -276,6 +297,25 @@
                 }
 
             GetProducts();
+
+
+            //取得TOP3
+
+            async function GetTopThree() {
+                    const reponse = await fetch('@Url.Content("~/Product/GetTopThree")');
+                    const datas = await reponse.json();
+                let count = 1;
+                datas.forEach(products => {
+
+                    let prodstr2 = "#top" + count;
+                    $(prodstr2).text(products.productName);
+                    $(prodstr2).attr("href", `/Product/ProductDetail?productName=${products.productName}`);
+
+                    count++;
+                    });
+                }
+
+            GetTopThree();
 
             //直接購買
             $("#btnDirectBuy").click(() => {
