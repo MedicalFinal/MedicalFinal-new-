@@ -60,66 +60,96 @@ namespace Medical.Controllers
             // 還有 result.txtdate
             DateTime? date = result.txtdate;
 
-            if (departmentId == 0 && doctorId == 0 && date == null)
-            {
-                id = _context.ClinicDetails.Where(n=>n.Online==0).Where(n=>n.ClinicDate>=DateTime.Now && n.ClinicDate.Value.Date < DateTime.Now.AddDays(7));
-            }
-            else if (departmentId == 0 && doctorId>0 &&date!=null)
-            {
-                id = _context.ClinicDetails.Where(a => a.DoctorId == doctorId)
-                 .Where(a => a.ClinicDate.Value.Date >=date&& a.ClinicDate.Value.Date< date.Value.AddDays(7)).Where(n => n.Online == 0);
-            }
-            else if (doctorId == 0 && departmentId>0 &&date!=null)
-            {
-                id = _context.ClinicDetails.Where(a => a.DepartmentId == departmentId)
-                 .Where(a => a.ClinicDate.Value.Date >= date && a.ClinicDate.Value.Date < date.Value.AddDays(7)).Where(n => n.Online == 0);
-            }
-            else if (date == null &&departmentId >0 && doctorId>0)
-            {
-                id = _context.ClinicDetails.Where(a => a.DepartmentId == departmentId)
-                 .Where(a => a.DoctorId == doctorId).Where(n => n.Online == 0).Where(n => n.ClinicDate >= DateTime.Now && n.ClinicDate.Value.Date < DateTime.Now.AddDays(7));
-            }
-            else if (departmentId == 0 && date == null)
-            {
-                id = _context.ClinicDetails
-                 .Where(a => a.DoctorId == doctorId).Where(n => n.Online == 0).Where(n => n.ClinicDate >= DateTime.Now && n.ClinicDate.Value.Date < DateTime.Now.AddDays(7));
-            }
-            else if (departmentId == 0 && doctorId == 0)
-            {
-                id = _context.ClinicDetails
-                 .Where(a => a.ClinicDate.Value.Date >= date && a.ClinicDate.Value.Date < date.Value.AddDays(7)).Where(n => n.Online == 0);
-            }
-            else if (date == null && doctorId == 0)
-            {
-                id = _context.ClinicDetails
-                 .Where(a => a.DepartmentId == departmentId).Where(n => n.Online == 0).Where(n => n.ClinicDate >= DateTime.Now && n.ClinicDate.Value.Date < DateTime.Now.AddDays(7));
-            }
-            else
-            {
-                id = _context.ClinicDetails.Where(a => a.ClinicDate.Value.Date >= date && a.ClinicDate.Value.Date < date.Value.AddDays(7))
-                    .Where(a => a.DoctorId == doctorId).Where(a => a.DepartmentId == departmentId).Where(n => n.Online == 0);
-            }
-
-
-
+            CMemberAdminViewModel vm = null;
+            string logJson = "";
             if (HttpContext.Session.Keys.Contains(CDictionary.SK_LOGINED_USE))
             {
-                CMemberAdminViewModel vm = null;
 
-                string logJson = "";
                 logJson = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USE);
                 vm = JsonSerializer.Deserialize<CMemberAdminViewModel>(logJson);
                 member = vm.MemberId;
             }
 
-            
+            id= _context.ClinicDetails.Where(n => n.Online == 0).Where(n => n.ClinicDate >= DateTime.Now && n.ClinicDate.Value.Date < DateTime.Now.AddDays(7));
+
+            //if (departmentId > 0 && doctorId > 0 && date != null)
+            //{
+            //    id = id.Where(a => a.ClinicDate.Value.Date >= date && a.ClinicDate.Value.Date < date.Value.AddDays(7))
+            //        .Where(a => a.DoctorId == doctorId).Where(a => a.DepartmentId == departmentId);
+            //}
+            if (departmentId > 0)
+            {
+                id = id.Where(a => a.DepartmentId == departmentId);
+            }
+            if (doctorId > 0)
+            {
+                id = id.Where(a => a.DoctorId == doctorId);
+            }
+            if (date != null)
+            {
+                id = id.Where(a => a.ClinicDate.Value.Date >= date && a.ClinicDate.Value.Date < date.Value.AddDays(7));
+            }
+
+
+            //================================================================
+
+            //if (departmentId == 0 && doctorId == 0 && date == null)
+            //{
+            //    id = _context.ClinicDetails.Where(n=>n.Online==0).Where(n=>n.ClinicDate>=DateTime.Now && n.ClinicDate.Value.Date < DateTime.Now.AddDays(7));
+            //}
+            //else if (departmentId == 0 && doctorId>0 &&date!=null)
+            //{
+            //    id = _context.ClinicDetails.Where(a => a.DoctorId == doctorId)
+            //     .Where(a => a.ClinicDate.Value.Date >=date&& a.ClinicDate.Value.Date< date.Value.AddDays(7)).Where(n => n.Online == 0);
+            //}
+            //else if (doctorId == 0 && departmentId>0 &&date!=null)
+            //{
+            //    id = _context.ClinicDetails.Where(a => a.DepartmentId == departmentId)
+            //     .Where(a => a.ClinicDate.Value.Date >= date && a.ClinicDate.Value.Date < date.Value.AddDays(7)).Where(n => n.Online == 0);
+            //}
+            //else if (date == null &&departmentId >0 && doctorId>0)
+            //{
+            //    id = _context.ClinicDetails.Where(a => a.DepartmentId == departmentId)
+            //     .Where(a => a.DoctorId == doctorId).Where(n => n.Online == 0).Where(n => n.ClinicDate >= DateTime.Now && n.ClinicDate.Value.Date < DateTime.Now.AddDays(7));
+            //}
+            //else if (departmentId == 0 && date == null)
+            //{
+            //    id = _context.ClinicDetails
+            //     .Where(a => a.DoctorId == doctorId).Where(n => n.Online == 0).Where(n => n.ClinicDate >= DateTime.Now && n.ClinicDate.Value.Date < DateTime.Now.AddDays(7));
+            //}
+            //else if (departmentId == 0 && doctorId == 0)
+            //{
+            //    id = _context.ClinicDetails
+            //     .Where(a => a.ClinicDate.Value.Date >= date && a.ClinicDate.Value.Date < date.Value.AddDays(7)).Where(n => n.Online == 0);
+            //}
+            //else if (date == null && doctorId == 0)
+            //{
+            //    id = _context.ClinicDetails
+            //     .Where(a => a.DepartmentId == departmentId).Where(n => n.Online == 0).Where(n => n.ClinicDate >= DateTime.Now && n.ClinicDate.Value.Date < DateTime.Now.AddDays(7));
+            //}
+            //else
+            //{
+            //    id = _context.ClinicDetails.Where(a => a.ClinicDate.Value.Date >= date && a.ClinicDate.Value.Date < date.Value.AddDays(7))
+            //        .Where(a => a.DoctorId == doctorId).Where(a => a.DepartmentId == departmentId).Where(n => n.Online == 0);
+            //}
+
+
+           
+
+            //if (member > 0)
+            //    id = _context.ClinicDetails
+            //        .Where(n => n.Online == 0)
+            //        .Where(n => n.ClinicDate >= DateTime.Now && n.ClinicDate.Value.Date < DateTime.Now.AddDays(7))
+            //        .Include(x => x.Reserves.Where(x => x.MemberId!=member ));
+
+
 
             List<ClinicSearch> list = new List<ClinicSearch>();
-
+          
             foreach (var item in id.OrderBy(n=>n.ClinicDate))
             {
-                //if (_context.Reserves.Where(n => n.ClinicDetailId == item.ClinicDetailId && n.MemberId==member).Count()>0)
-                //{
+                //var q = _context.Reserves.Where(n => n.ClinicDetailId == item.ClinicDetailId && n.MemberId == member);
+
                     ClinicSearch t = new ClinicSearch(_context)
                     {
                         doctorid = item.DoctorId,
@@ -132,8 +162,8 @@ namespace Medical.Controllers
                     };
                 
                 list.Add(t);
-                //}
-                
+           
+
 
             }
             
