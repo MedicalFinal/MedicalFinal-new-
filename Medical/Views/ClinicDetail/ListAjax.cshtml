@@ -216,11 +216,56 @@
         @*抓日期*@
         function getweek() {
             for (let i = 0; i < 7; i++) {
-                div = `<div>${datenow.getMonth() + 1}/${datenow.getDate() + i+week}</div>`
-                if (datenow.getDay() + i > 6)
-                    document.querySelector(`.tr .day${i-7+datenow.getDay()} div`).innerHTML = div
-                else
-                    document.querySelector(`.tr .day${datenow.getDay() + i} div`).innerHTML = div
+                let 日期 = datenow.getDate() + i + week
+                let 月份 = datenow.getMonth() + 1
+                if (月份 == 1 || 月份 == 3 || 月份 == 5 || 月份 == 7 || 月份 == 8 || 月份 == 10 || 月份 == 12) {
+                    if (日期 > 32) {
+                        div = `<div>${datenow.getMonth() + 2}/${日期 - 32}</div>`
+                        if (datenow.getDay() + i > 6)
+                            document.querySelector(`.tr .day${i - 7 + datenow.getDay()} div`).innerHTML = div
+                        else
+                            document.querySelector(`.tr .day${datenow.getDay() + i} div`).innerHTML = div
+                    }
+                    else {
+                        div = `<div>${datenow.getMonth() + 1}/${日期}</div>`
+                        if (datenow.getDay() + i > 6)
+                            document.querySelector(`.tr .day${i - 7 + datenow.getDay()} div`).innerHTML = div
+                        else
+                            document.querySelector(`.tr .day${datenow.getDay() + i} div`).innerHTML = div
+                    }
+                }
+                if (月份 == 2) {
+                    if (日期 > 29) {
+                        div = `<div>${datenow.getMonth() + 2}/${日期 - 29}</div>`
+                        if (datenow.getDay() + i > 6)
+                            document.querySelector(`.tr .day${i - 7 + datenow.getDay()} div`).innerHTML = div
+                        else
+                            document.querySelector(`.tr .day${datenow.getDay() + i} div`).innerHTML = div
+                    }
+                    else {
+                        div = `<div>${datenow.getMonth() + 1}/${日期}</div>`
+                        if (datenow.getDay() + i > 6)
+                            document.querySelector(`.tr .day${i - 7 + datenow.getDay()} div`).innerHTML = div
+                        else
+                            document.querySelector(`.tr .day${datenow.getDay() + i} div`).innerHTML = div
+                    }
+                }
+                else {
+                    if (日期 > 31) {
+                        div = `<div>${datenow.getMonth() + 2}/${日期 - 31}</div>`
+                        if (datenow.getDay() + i > 6)
+                            document.querySelector(`.tr .day${i - 7 + datenow.getDay()} div`).innerHTML = div
+                        else
+                            document.querySelector(`.tr .day${datenow.getDay() + i} div`).innerHTML = div
+                    }
+                    else {
+                        div = `<div>${datenow.getMonth() + 1}/${日期}</div>`
+                        if (datenow.getDay() + i > 6)
+                            document.querySelector(`.tr .day${i - 7 + datenow.getDay()} div`).innerHTML = div
+                        else
+                            document.querySelector(`.tr .day${datenow.getDay() + i} div`).innerHTML = div
+                    }
+                }
             }
         }
         @*抓預約人數是否額滿*@
