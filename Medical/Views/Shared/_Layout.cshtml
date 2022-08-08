@@ -11,6 +11,7 @@
     string showID = "";
     int showID2 = 0;
     int user = 0;
+    string userName = "";
     string LoginbuttonValue = "";
     string LogoutbuttonValue = "";
     CLoginViewModel gg = null;
@@ -31,6 +32,7 @@
         showID2 = vm.MemberId;
         LogoutbuttonValue = "登出";
         user = (int)vm.Role;
+        userName = vm.MemberName;
     }
     else if (Context.Session.Keys.Contains(CDictionary.SK_GOOGLELOGINED_USE))
     {
@@ -38,7 +40,7 @@
         gg = JsonSerializer.Deserialize<CLoginViewModel>(logGoogle);
         showID = gg.txtName;
         LogoutbuttonValue = "登出";
-        
+
     }
 }
 <html lang="en">
@@ -357,6 +359,7 @@
                                 </div>
                                 @*====聊天內容====*@
                                 <input type="hidden" value="@user" id="inpUser" />
+                                <input type="hidden" value="@userName" id="inpUser2" />
                                 <div class="card-body" style="background-color: #FFFCEC ">
                                     <div class="direct-chat-messages" id="MSN">
                                         @*====聊天內容====*@
