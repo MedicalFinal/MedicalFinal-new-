@@ -70,7 +70,7 @@ namespace Medical.Controllers
                 member = vm.MemberId;
             }
 
-            id= _context.ClinicDetails.Where(n => n.Online == 0).Where(n => n.ClinicDate >= DateTime.Now && n.ClinicDate.Value.Date < DateTime.Now.AddDays(7));
+            id= _context.ClinicDetails.Where(n => n.Online == 0);
 
             //if (departmentId > 0 && doctorId > 0 && date != null)
             //{
@@ -88,6 +88,10 @@ namespace Medical.Controllers
             if (date != null)
             {
                 id = id.Where(a => a.ClinicDate.Value.Date >= date && a.ClinicDate.Value.Date < date.Value.AddDays(7));
+            }
+            else
+            {
+                id = id.Where(n => n.ClinicDate >= DateTime.Now && n.ClinicDate.Value.Date < DateTime.Now.AddDays(7));
             }
 
 
